@@ -86,3 +86,4 @@ SELECT product_name,
 FROM agri_sales
 GROUP BY product_name
 ORDER BY sell_through_rate DESC;
+
