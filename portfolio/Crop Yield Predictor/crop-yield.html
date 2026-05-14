@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crop Yield Predictor Dashboard | Nhambe DB</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --navy:         #070F1E;
+      --navy-mid:     #0D1B35;
+      --navy-card:    #111F3A;
+      --navy-card2:   #152344;
+      --blue:         #1A4F8A;
+      --blue-light:   #2E7BC4;
+      --blue-bright:  #4DA3F5;
+      --sky:          rgba(77,163,245,0.12);
+      --sky-border:   rgba(77,163,245,0.22);
+      --text-white:   #FFFFFF;
+      --text-light:   #C8DDEF;
+      --text-mid:     #7FA3C8;
+      --text-soft:    #4E6E8E;
+      --gold:         #F0A500;
+      --gold-dim:     rgba(240,165,0,0.15);
+      --gold-border:  rgba(240,165,0,0.3);
+      --green:        #2DD4BF;
+      --green-dim:    rgba(45,212,191,0.1);
+      --green-border: rgba(45,212,191,0.25);
+    }
+  </style>
+</head>
+<body class="font-sans" style="background-color: var(--navy); color: var(--text-light);">
+
+  <!-- Hero Section -->
+  <section class="text-center py-16" style="background: linear-gradient(to bottom, var(--green), var(--green-dim));">
+    <h1 class="text-4xl font-bold mb-2" style="color: var(--text-white);">Crop Yield Predictor</h1>
+    <p class="text-xl" style="color: var(--text-mid);">Python & Excel Dashboard Analysing global Crop Yield and predicting yield outcomes.</p>
+  </section>
+
+  <!-- Content Section -->
+  <section class="max-w-5xl mx-auto my-12 px-4 space-y-12">
+
+    <!-- Dashboard Screenshot -->
+    <div class="shadow-lg rounded-xl p-6" style="background-color: var(--navy-card);">
+      <h2 class="text-2xl font-semibold mb-4" style="color: var(--green);">Dashboard Screenshot</h2>
+      <img src="crop-yield-dashboard.png" alt="Crop Yield Dashboard" class="w-full rounded-lg shadow-md">
+    </div>
+
+    <!-- Embedded Report Summary -->
+    <div class="shadow-lg rounded-xl p-6 space-y-6" style="background-color: var(--navy-card);">
+      <h2 class="text-2xl font-semibold mb-4" style="color: var(--green);">Project Summary</h2>
+      
+      <div>
+        <h3 class="text-xl font-semibold mb-2" style="color: var(--green);">Project Overview</h3>
+        <p style="color: var(--text-mid);"><strong>Developer:</strong> Nhambe DB</p>
+        <p style="color: var(--text-mid);"><strong>Tool:</strong> Python (Pandas, NumPy, Matplotlib, Seaborn, Scikit-learn) & Microsoft Excel</p>
+        <p style="color: var(--text-mid);"><strong>Sector:</strong> Agribusiness / Crop Yield Analysis</p>
+      </div>
+
+      <div>
+        <h3 class="text-xl font-semibold mb-2" style="color: var(--green);">Executive Summary</h3>
+        <p style="color: var(--text-mid);">
+          This project analyses global crop yield data across multiple countries and crops using Python. Two predictive models were built and compared, Linear Regression and Random Forest with Random Forest achieving an R² of 0.99 across 28243 data points, explaining 99% of yield variation. Key findings were visualised in an interactive Excel dashboard
+        </p>
+      </div>
+
+      <div>
+        <h3 class="text-xl font-semibold mb-2" style="color: var(--green);">Problem Statement</h3>
+        <p style="color: var(--text-mid);">
+         Agricultural planners and policymakers often lack data-driven tools to understand which crops and regions produce the highest yields and what environmental factors drive those yields. Without predictive models, resource allocation decisions rely on intuition rather than evidence.
+        </p>
+      </div>
+
+      <div>
+        <h3 class="text-xl font-semibold mb-2" style="color: var(--green);">Solution & Technical Implementation</h3>
+        <ul class="list-disc ml-5 space-y-2" style="color: var(--text-mid);">
+          <li><strong>Phase 1:</strong> Data cleaning and preparation using Pandas.</li>
+          <li><strong>Phase 2:</strong> Exploratory analysis top countries, top crops, rainfall/temperature/pesticide relationships.</li>
+          <li><strong>Phase 3:</strong> Predictive modelling using Scikit-learn (Linear Regression and Random Forest).</li>
+          <li><strong>Phase 4:</strong> Model comparison and feature importance analysis.</li>
+          <li><strong>Phase 5:</strong> Results exported to Excel dashboard with KPI cards, 3 charts and a slicer.</li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-xl font-semibold mb-2" style="color: var(--green);">Key Insights</h3>
+        <ul class="list-disc ml-5 space-y-2" style="color: var(--text-mid);">
+          <li> Potatoes are the highest yielding crop globally</li>
+          <li> Belgium leads all countries in average potato yield at 448,891 hg/ha</li>
+          <li> Random Forest dramatically outperformed Linear Regression with an 87% reduction in prediction error (RMSE: 10,181 vs 81,501) confirming non-linear relationships in the data</li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-xl font-semibold mb-2" style="color: var(--green);">Key Impact</h3>
+        <ul class="list-disc ml-5 space-y-2" style="color: var(--text-mid);">
+          <li> Gives agricultural planners a data-driven basis for crop selection decisions</li>
+          <li> Identifies which environmental inputs most influence yield</li>
+          <li>Predictive model can be used to forecast yield based on rainfall, temperature and pesticide inputs</li>
+        </ul>
+      </div>
+      
+         <!-- Buttons -->
+      <div class="flex flex-wrap gap-4 justify-center mt-6">
+        <a href="crop_yield_predictor_report.pdf" target="_blank" style="background-color: var(--gold); color: var(--text-white);" class="px-6 py-3 rounded hover:brightness-110 transition">
+          View Report
+        </a>
+        <a href="yield_summary-analysis-Dashboard.xlsx" style="background-color: var(--gold); color: var(--text-white);" class="px-6 py-3 rounded hover:brightness-110 transition">
+          Download Dashboard
+        </a>
+        <a href="https://github.com/nhambe-dokotela/crop-yield-predictor" target="_blank" style="background-color: var(--gold); color: var(--text-white);" class="px-6 py-3 rounded hover:brightness-110 transition">
+          View on github
+        </a>
+      </div>
+
+  </div>
+    
+
+    <!-- Back Button -->
+    <div class="text-center">
+      <a href="projects.html" style="background-color: var(--gold); color: var(--text-white);" class="px-6 py-3 rounded hover:brightness-110 transition">Back to Projects</a>
+    </div>
+
+  </section>
+
+  <footer class="text-center py-6" style="color: var(--green); font-weight: 500;">
+    Designed and Developed by Nhambe DB
+  </footer>
+
+</body>
+</html>
