@@ -1,0 +1,262 @@
+// This Pine Script® code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
+// © Dokotela 2.0 — Strategy Backtest Version
+
+//@version=6
+// ============================================================
+// Dokotela 2.0 — v2.4
+// Paste into Pine Editor on any M5 or M15 chart.
+//
+// Changes from original:
+//   1. ta.dmi() replaces ta.adx() — fixes CE10271 compile error
+//   2. Cooldown after SL hit — stops re-entry at same failing zone
+//   3. ADX filter removed — was blocking too many valid signals
+//   4. EMA50 filter back to single close (original behaviour)
+//   5. Alerts added — set via TradingView Alert dialog
+// ============================================================
+
+strategy("Dokotela2.0 Strategy",
+     overlay             = true,
+     initial_capital     = 10000,
+     default_qty_type    = strategy.percent_of_equity,
+     default_qty_value   = 1,
+     commission_type     = strategy.commission.percent,
+     commission_value    = 0.07,
+     slippage            = 2,
+     max_lines_count     = 500,
+     max_labels_count    = 500)
+
+// ============================================================
+// INPUTS
+// ============================================================
+majorLen     = input.int(75,    "Major Swing Lookback (M15 bars)", minval=20, maxval=200)
+emaFast      = input.int(9,     "EMA Fast",                        minval=1)
+emaSlow      = input.int(21,    "EMA Slow",                        minval=1)
+slMultiplier = input.float(1.0, "SL Buffer (ATR multiplier)",      minval=0.1, step=0.1)
+zoneBuffer   = input.float(1.0, "Zone Buffer (ATR multiplier)",    minval=0.1, step=0.1)
+minTouches   = input.int(1,     "Min Zone Touches Before Armed",   minval=1,   maxval=5)
+showZones    = input.bool(true, "Show Trade Zones")
+showEMAs     = input.bool(true, "Show EMAs on Chart")
+showSwings   = input.bool(true, "Show Major Swing Markers")
+cooldownBars = input.int(5,     "Cooldown bars after SL hit",      minval=1, maxval=50, group="Filters")
+
+// ============================================================
+// COLORS
+// ============================================================
+bullColor = color.new(#00C896, 0)
+bearColor = color.new(#FF4757, 0)
+zoneColor = color.new(#00C896, 90)
+bearZone  = color.new(#FF4757, 90)
+
+// ============================================================
+// ATR
+// ============================================================
+atr     = ta.atr(14)
+m15_atr = request.security(syminfo.tickerid, "15", ta.atr(14), lookahead=barmerge.lookahead_off)
+
+// ============================================================
+// M15 MAJOR SWING DETECTION
+// ============================================================
+m15_majorHigh    = request.security(syminfo.tickerid, "15", ta.highest(high, majorLen), lookahead=barmerge.lookahead_off)
+m15_majorLow     = request.security(syminfo.tickerid, "15", ta.lowest(low,  majorLen),  lookahead=barmerge.lookahead_off)
+m15_newMajorHigh = request.security(syminfo.tickerid, "15", high == ta.highest(high, majorLen), lookahead=barmerge.lookahead_off)
+m15_newMajorLow  = request.security(syminfo.tickerid, "15", low  == ta.lowest(low,  majorLen),  lookahead=barmerge.lookahead_off)
+
+// ============================================================
+// TRACK LAST TWO MAJOR SWINGS
+// ============================================================
+var float sh1 = na
+var float sh2 = na
+var float sl1 = na
+var float sl2 = na
+
+var int  shTouches = 0
+var int  slTouches = 0
+var bool inShZone  = false
+var bool inSlZone  = false
+
+if m15_newMajorHigh
+    if na(sh1) or math.abs(m15_majorHigh - sh1) > m15_atr * 1.0
+        sh2       := sh1
+        sh1       := m15_majorHigh
+        shTouches := 0
+        inShZone  := false
+
+if m15_newMajorLow
+    if na(sl1) or math.abs(m15_majorLow - sl1) > m15_atr * 1.0
+        sl2       := sl1
+        sl1       := m15_majorLow
+        slTouches := 0
+        inSlZone  := false
+
+// ============================================================
+// TOUCH COUNTING
+// ============================================================
+nearBullZone = not na(sl1) and low  <= sl1 + m15_atr * zoneBuffer and low  >= sl1 - m15_atr * zoneBuffer
+nearBearZone = not na(sh1) and high >= sh1 - m15_atr * zoneBuffer and high <= sh1 + m15_atr * zoneBuffer
+
+if nearBullZone and not inSlZone
+    slTouches := slTouches + 1
+    inSlZone  := true
+if not nearBullZone
+    inSlZone  := false
+
+if nearBearZone and not inShZone
+    shTouches := shTouches + 1
+    inShZone  := true
+if not nearBearZone
+    inShZone  := false
+
+// ============================================================
+// STRUCTURE VALIDATION
+// ============================================================
+validBullSetup = not na(sl1) and slTouches >= minTouches
+validBearSetup = not na(sh1) and shTouches >= minTouches
+
+// ============================================================
+// M15 TREND FILTER — EMA 50 single close
+// ============================================================
+m15_ema50     = request.security(syminfo.tickerid, "15", ta.ema(close, 50), lookahead=barmerge.lookahead_off)
+m15_close     = request.security(syminfo.tickerid, "15", close,             lookahead=barmerge.lookahead_off)
+m15_bullTrend = m15_close > m15_ema50
+m15_bearTrend = m15_close < m15_ema50
+
+plot(m15_ema50, "EMA 50 (M15)", color=color.new(#FF6B35, 0), linewidth=2)
+
+// ============================================================
+// M1 EMAs
+// ============================================================
+m1_ema9  = request.security(syminfo.tickerid, "1", ta.ema(close, emaFast), lookahead=barmerge.lookahead_off)
+m1_ema21 = request.security(syminfo.tickerid, "1", ta.ema(close, emaSlow), lookahead=barmerge.lookahead_off)
+
+plot(showEMAs ? m1_ema9  : na, "EMA 9 (M1)",  color=color.new(#FFD700, 0), linewidth=1)
+plot(showEMAs ? m1_ema21 : na, "EMA 21 (M1)", color=color.new(#00BFFF, 0), linewidth=1)
+
+m1_bullCross = request.security(syminfo.tickerid, "1", ta.crossover( ta.ema(close, emaFast), ta.ema(close, emaSlow)), lookahead=barmerge.lookahead_off)
+m1_bearCross = request.security(syminfo.tickerid, "1", ta.crossunder(ta.ema(close, emaFast), ta.ema(close, emaSlow)), lookahead=barmerge.lookahead_off)
+
+m1_bullBias = m1_ema9 > m1_ema21
+m1_bearBias = m1_ema9 < m1_ema21
+
+// ============================================================
+// COOLDOWN — no re-entry for cooldownBars after a SL hit
+// ============================================================
+var int  lastExitBar = 0
+var bool lastWasLoss = false
+
+if strategy.closedtrades > 0
+    lastTrade = strategy.closedtrades - 1
+    if strategy.closedtrades.exit_bar_index(lastTrade) != lastExitBar
+        lastExitBar  := strategy.closedtrades.exit_bar_index(lastTrade)
+        lastWasLoss  := strategy.closedtrades.profit(lastTrade) < 0
+
+inCooldown = lastWasLoss and (bar_index - lastExitBar) < cooldownBars
+
+// ============================================================
+// ARM FLAGS
+// ============================================================
+var bool bullArmed = false
+var bool bearArmed = false
+
+if validBullSetup and nearBullZone and not inCooldown
+    bullArmed := true
+if validBearSetup and nearBearZone and not inCooldown
+    bearArmed := true
+
+if not nearBullZone or not validBullSetup
+    bullArmed := false
+if not nearBearZone or not validBearSetup
+    bearArmed := false
+
+// ============================================================
+// SIGNALS
+// ============================================================
+buySignal  = bullArmed and m1_bullCross and m1_bullBias and m15_bullTrend
+sellSignal = bearArmed and m1_bearCross and m1_bearBias and m15_bearTrend
+
+if buySignal
+    bullArmed := false
+if sellSignal
+    bearArmed := false
+
+// ============================================================
+// SL AND TP LEVELS
+// ============================================================
+buySL  = sl1 - atr * slMultiplier
+buyTP  = not na(sh1) and sh1 > close ? sh1 : close + (close - buySL) * 3
+sellSL = sh1 + atr * slMultiplier
+sellTP = not na(sl1) and sl1 < close ? sl1 : close - (sellSL - close) * 3
+
+// ============================================================
+// STRATEGY ENTRIES AND EXITS
+// ============================================================
+if buySignal and strategy.position_size == 0
+    strategy.entry("BUY", strategy.long)
+    strategy.exit("BUY EXIT", from_entry="BUY",
+         stop           = buySL,
+         limit          = buyTP,
+         comment_loss   = "SL hit",
+         comment_profit = "TP hit")
+
+if sellSignal and strategy.position_size == 0
+    strategy.entry("SELL", strategy.short)
+    strategy.exit("SELL EXIT", from_entry="SELL",
+         stop           = sellSL,
+         limit          = sellTP,
+         comment_loss   = "SL hit",
+         comment_profit = "TP hit")
+
+// ============================================================
+// ALERTS — set via TradingView Alert > Any alert() function call
+// ============================================================
+if buySignal
+    alert("Dokotela BUY — " + syminfo.ticker +
+         " | Price: " + str.tostring(close,  "#.#####") +
+         " | SL: "    + str.tostring(buySL,  "#.#####") +
+         " | TP: "    + str.tostring(buyTP,  "#.#####"),
+         alert.freq_once_per_bar)
+
+if sellSignal
+    alert("Dokotela SELL — " + syminfo.ticker +
+         " | Price: " + str.tostring(close,   "#.#####") +
+         " | SL: "    + str.tostring(sellSL,  "#.#####") +
+         " | TP: "    + str.tostring(sellTP,  "#.#####"),
+         alert.freq_once_per_bar)
+
+// ============================================================
+// CANDLE COLORING — blue in long, red in short, grey when flat
+// ============================================================
+inLong  = strategy.position_size > 0
+inShort = strategy.position_size < 0
+
+bullCandle = color.new(#4FC3F7, 0)
+bullWick   = color.new(#B3E5FC, 0)
+bearCandle = color.new(#FF4757, 0)
+bearWick   = color.new(#FF8A80, 0)
+noCandle   = color.new(#9E9E9E, 60)
+noWick     = color.new(#757575, 60)
+greyColor  = color.new(#808080, 0)
+
+candleBody   = inLong  ? bullCandle : inShort ? bearCandle : noCandle
+candleWick   = inLong  ? bullWick   : inShort ? bearWick   : noWick
+candleBorder = inLong  ? bullCandle : inShort ? bearCandle : greyColor
+
+plotcandle(open, high, low, close,
+     title="Dokotela Candles",
+     color=candleBody, wickcolor=candleWick, bordercolor=candleBorder)
+
+// ============================================================
+// SWING MARKERS
+// ============================================================
+plotshape(showSwings and m15_newMajorHigh, title="Major Swing High",
+     location=location.abovebar, style=shape.triangledown,
+     color=color.new(bearColor, 20), size=size.normal)
+
+plotshape(showSwings and m15_newMajorLow, title="Major Swing Low",
+     location=location.belowbar, style=shape.triangleup,
+     color=color.new(bullColor, 20), size=size.normal)
+
+// ============================================================
+// ZONE BACKGROUND
+// ============================================================
+bgcolor(showZones and validBullSetup and nearBullZone ? zoneColor : na, title="Bull Zone")
+bgcolor(showZones and validBearSetup and nearBearZone ? bearZone   : na, title="Bear Zone")
