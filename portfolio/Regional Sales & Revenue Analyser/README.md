@@ -52,6 +52,7 @@ Agricultural businesses operating across multiple provinces often lack a consoli
 
 | File | Description |
 |------|-------------|
+| `regional-sales.html` | Portfolio project page |
 | `regional_sales_dashboard.xlsx` | Excel dashboard — open to explore sales by province and year |
 | `regional-sales.pdf` | Full project report |
 | `dashboard_preview.png` | Dashboard screenshot |
