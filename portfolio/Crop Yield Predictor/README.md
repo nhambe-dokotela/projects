@@ -24,11 +24,11 @@ Agricultural planners and policymakers often lack data-driven tools to understan
 
 ## Solution & Technical Implementation
 
-- **Phase 1 — Data Cleaning:** Raw dataset cleaned and prepared using Pandas
-- **Phase 2 — Exploratory Analysis:** Top countries, top crops, and relationships between rainfall, temperature, and pesticide usage analysed
-- **Phase 3 — Predictive Modelling:** Two models built using Scikit-learn — Linear Regression and Random Forest
-- **Phase 4 — Model Comparison:** Performance evaluated using R² and RMSE — Random Forest dramatically outperformed Linear Regression
-- **Phase 5 — Excel Dashboard:** Results exported to an interactive dashboard with KPI cards, 3 charts, and a slicer
+- **Phase 1: Data Cleaning:** Raw dataset cleaned and prepared using Pandas
+- **Phase 2: Exploratory Analysis:** Top countries, top crops, and relationships between rainfall, temperature, and pesticide usage analysed
+- **Phase 3: Predictive Modelling:** Two models built using Scikit-learn — Linear Regression and Random Forest
+- **Phase 4: Model Comparison:** Performance evaluated using R² and RMSE — Random Forest dramatically outperformed Linear Regression
+- **Phase 5: Excel Dashboard:** Results exported to an interactive dashboard with KPI cards, 3 charts, and a slicer
 
 ---
 
