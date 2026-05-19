@@ -1,8 +1,11 @@
 # African Agricultural Market Price Monitor
 
 **Developer:** Nhambe DB
+
 **Tools:** SQL (PostgreSQL) & Microsoft Power BI
+
 **Data Source:** WFP Global Food Prices Dataset (Kaggle)
+
 **Sector:** Agricultural Market Intelligence / Food Security
 
 ---
