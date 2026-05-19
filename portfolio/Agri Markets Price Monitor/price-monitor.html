@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>African Agricultural Market Price Monitor | Nhambe DB</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="projects.html">Projects</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- HERO -->
+    <section class="project-hero">
+      <h1>African Agricultural Market Price Monitor</h1>
+      <p>Interactive dashboard analysing food commodity prices across 6 African countries using SQL & Power BI.</p>
+    </section>
+
+    <!-- POWER BI LIVE EMBED -->
+    <section class="project-embed">
+      <h2>Live Dashboard</h2>
+      <p>Use the filters below to explore commodity prices by country, year, and product.</p>
+      <div class="embed-wrapper">
+        <iframe
+          title="African Agricultural Market Price Monitor"
+          src="YOUR_POWER_BI_EMBED_URL_HERE"
+          frameborder="0"
+          allowFullScreen="true"
+          style="width:100%; height:600px; border:none;">
+        </iframe>
+      </div>
+      <p class="embed-note">
+        🔗 Can't see the dashboard? 
+        <a href="YOUR_POWER_BI_PUBLIC_LINK_HERE" target="_blank">Open it directly in Power BI →</a>
+      </p>
+    </section>
+
+    <!-- PROJECT SUMMARY -->
+    <section class="project-summary">
+
+      <h2>Project Summary</h2>
+
+      <h3>Project Overview</h3>
+      <p><strong>Developer:</strong> Nhambe DB</p>
+      <p><strong>Tools:</strong> SQL (PostgreSQL) & Microsoft Power BI</p>
+      <p><strong>Data Source:</strong> WFP Global Food Prices Dataset (Kaggle)</p>
+      <p><strong>Sector:</strong> Agricultural Market Intelligence / Food Security</p>
+
+      <h3>Executive Summary</h3>
+      <p>This dashboard monitors and analyses agricultural commodity price trends across six African countries between 2017 and 2021. By combining SQL-based data extraction with Power BI visualisation, the tool enables policymakers, agribusinesses, and market analysts to track price volatility, identify the most expensive markets, and compare pre- and post-2020 price shifts — a period heavily influenced by the COVID-19 pandemic.</p>
+
+      <h3>Problem Statement</h3>
+      <p>Agricultural commodity prices in Africa are highly volatile and vary significantly across countries and markets. Without a centralised monitoring tool, it is difficult to identify which commodities are driving food insecurity, which markets are consistently overpriced, and how prices have shifted over time. This lack of visibility makes planning, procurement, and policy decisions reactive rather than proactive.</p>
+
+      <h3>Solution & Technical Implementation</h3>
+      <ul>
+        <li><strong>SQL Data Extraction:</strong> Five structured queries written in PostgreSQL to extract average prices per commodity, most expensive markets per country, maize price trends over time, top 10 countries by average food price, and a pre- vs post-2020 price comparison.</li>
+        <li><strong>Power BI Dashboard:</strong> Interactive single-page dashboard featuring KPI cards (Avg Price, Max Price, Total Records, Countries Tracked), a food price trend line chart (2017–2021), a top 10 commodities bar chart, and an average price by country bar chart.</li>
+        <li><strong>Interactive Filters:</strong> Users can slice data by commodity, country, and year — no technical knowledge required.</li>
+        <li><strong>Scoped Dataset:</strong> The global WFP dataset was filtered to six African countries — Ethiopia, Kenya, Nigeria, South Africa, Uganda, and United Republic of Tanzania.</li>
+      </ul>
+
+      <h3>Key Impact</h3>
+      <ul>
+        <li><strong>Price Transparency:</strong> Reveals which commodities (Rice, Beans, Millet) consistently command the highest prices across African markets.</li>
+        <li><strong>Market Risk Identification:</strong> Highlights the most expensive markets per country, helping procurement teams avoid high-cost supply sources.</li>
+        <li><strong>COVID-19 Price Shift Analysis:</strong> The pre- vs post-2020 comparison quantifies how the pandemic disrupted food pricing across the continent.</li>
+        <li><strong>Food Security Insight:</strong> Equips NGOs, governments, and agribusinesses with data needed to respond to food price crises proactively.</li>
+      </ul>
+
+    </section>
+
+    <!-- BUTTONS -->
+    <section class="project-actions">
+      <a href="African_Agricultural_Market_Price_Monitor-report.pdf" class="btn" target="_blank">View Report</a>
+      <a href="YOUR_POWER_BI_PUBLIC_LINK_HERE" class="btn btn-secondary" target="_blank">Open in Power BI</a>
+      <a href="projects.html" class="btn btn-back">← Back to Projects</a>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>Designed & Developed by Nhambe DB — Agricultural Data Analyst — South Africa</p>
+  </footer>
+
+</body>
+</html>
