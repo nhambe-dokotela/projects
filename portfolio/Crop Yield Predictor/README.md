@@ -18,7 +18,7 @@ A Python-powered predictive analytics project analysing global crop yield data a
 
 ## Problem Statement
 
-Agricultural planners and policymakers often lack data-driven tools to understand which crops and regions produce the highest yields and what environmental factors drive those outcomes. Without predictive models, resource allocation decisions rely on intuition rather than evidence — leading to inefficient planting strategies and missed yield potential.
+Agricultural planners and policymakers often lack data-driven tools to understand which crops and regions produce the highest yields and what environmental factors drive those outcomes. Without predictive models, resource allocation decisions rely on intuition rather than evidence leading to inefficient planting strategies and missed yield potential.
 
 ---
 
@@ -26,8 +26,8 @@ Agricultural planners and policymakers often lack data-driven tools to understan
 
 - **Phase 1: Data Cleaning:** Raw dataset cleaned and prepared using Pandas
 - **Phase 2: Exploratory Analysis:** Top countries, top crops, and relationships between rainfall, temperature, and pesticide usage analysed
-- **Phase 3: Predictive Modelling:** Two models built using Scikit-learn — Linear Regression and Random Forest
-- **Phase 4: Model Comparison:** Performance evaluated using R² and RMSE — Random Forest dramatically outperformed Linear Regression
+- **Phase 3: Predictive Modelling:** Two models built using Scikit-learn, Linear Regression and Random Forest
+- **Phase 4: Model Comparison:** Performance evaluated using R² and RMSE, Random Forest dramatically outperformed Linear Regression
 - **Phase 5: Excel Dashboard:** Results exported to an interactive dashboard with KPI cards, 3 charts, and a slicer
 
 ---
