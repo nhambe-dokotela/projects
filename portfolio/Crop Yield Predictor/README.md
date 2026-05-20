@@ -12,7 +12,7 @@
 
 ## Overview
 
-A Python-powered predictive analytics project analysing global crop yield data across multiple countries and crops. Two machine learning models were built and compared — Linear Regression and Random Forest — with Random Forest achieving an R² of 0.99 across 28 243 data points, explaining 99% of yield variation. Key findings were visualised in an interactive Excel dashboard.
+A Python-powered predictive analytics project analysing global crop yield data across multiple countries and crops. Two machine learning models were built and compared Linear Regression and Random Forest with Random Forest achieving an R² of 0.99 across 28 243 data points, explaining 99% of yield variation. Key findings were visualised in an interactive Excel dashboard.
 
 ---
 
