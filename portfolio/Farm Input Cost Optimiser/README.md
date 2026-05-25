@@ -1,4 +1,4 @@
-# 🌱 Farm Input Cost Optimiser
+# Farm Input Cost Optimiser
 
 > Agricultural input cost analysis across 22 crops using Python & Google Looker Studio.
 
